@@ -17,8 +17,8 @@ install_nodejs() {
   fi
 
   echo "Downloading and installing node $version..."
-  local download_url="http://s3pository.heroku.com/node/v$version/node-v$version-$os-$cpu.tar.gz"
-  curl "$download_url" --silent --fail  --retry 5 --retry-max-time 15 -o /tmp/node.tar.gz || (echo "Unable to download node $version; does it exist?" && false)
+  local download_url="http://npm.taobao.org/mirrors/node/v$version/node-v$version-$os-$cpu.tar.gz"
+  curl "$download_url" -L --silent --fail  --retry 5 --retry-max-time 15 -o /tmp/node.tar.gz || (echo "Unable to download node $version; does it exist?" && false)
   tar xzf /tmp/node.tar.gz -C /tmp
   rm -rf $dir/*
   mv /tmp/node-v$version-$os-$cpu/* $dir
@@ -35,8 +35,8 @@ install_iojs() {
   fi
 
   echo "Downloading and installing iojs $version..."
-  local download_url="https://iojs.org/dist/v$version/iojs-v$version-$os-$cpu.tar.gz"
-  curl "$download_url" --silent --fail --retry 5 --retry-max-time 15 -o /tmp/node.tar.gz || (echo "Unable to download iojs $version; does it exist?" && false)
+  local download_url="http://npm.taobao.org/mirrors/iojs/v$version/iojs-v$version-$os-$cpu.tar.gz"
+  curl "$download_url" -L --silent --fail --retry 5 --retry-max-time 15 -o /tmp/node.tar.gz || (echo "Unable to download iojs $version; does it exist?" && false)
   tar xzf /tmp/node.tar.gz -C /tmp
   mv /tmp/iojs-v$version-$os-$cpu/* $dir
   chmod +x $dir/bin/*
@@ -56,7 +56,7 @@ install_npm() {
       echo "npm `npm --version` already installed with node"
     else
       echo "Downloading and installing npm $version (replacing version `npm --version`)..."
-      npm install --unsafe-perm --quiet -g npm@$version 2>&1 >/dev/null
+      npm install --registry=https://registry.npm.taobao.org --unsafe-perm --quiet -g npm@$version 2>&1 >/dev/null
     fi
   fi
 }
